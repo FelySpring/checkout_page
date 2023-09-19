@@ -129,38 +129,47 @@
                                     <label class="input-container">
                                         <input id="iTEXT" class="textinput" name="TEXT" maxlength="90"
                                             onblur="nameValidate()"
-                                            type="text" autocomplete="off" placeholder="Name on Card" />                                            <small>Error Message</small>
-                                                                               
+                                            onkeydown="setNameSuccessFor()"
+                                            type="text" autocomplete="off" placeholder="Name on Card" />                                           
+                                            <small></small>                                                                               
                                     </label>
                                 </div>
                                 <div class="cc-info input container">
-                                    <div class="cc-info-number">
-                                
+                                    <div class="cc-info-number">                                
                                         <div class="form-label">
                                             <label class="form_label">Insert Card Information</label>
                                         </div>
                                         <label class="input-container">
                                             <input type="text" name="$PAN" id="iPAN" class="textinput" maxlength="19" autocomplete="off"
-                                            onblur="cardNumberValidate()" placeholder="Card Number" />                                            
-                                            
+                                            onblur="cardNumberValidate()" 
+                                            onkeydown="setCardNumberSuccessFor()" 
+                                            placeholder="Card Number" />
+                                            <small class="show-mobile" id="cardNumberErrorMob"></small>
                                         </label>
                                         <img src="" class="cc-image" id="ccImg" />
-                                    </div>
+                                    
+                                    </div>                                  
+
                                     <div>
                                         <div class="form-label">
-                                            <label class="form_label">Valid Thru</label>
+                                        <label class="form_label">Valid Thru</label>
                                         </div>
                                 
                                         <label class="input-container">
                                             <input name="MM" id="month" class="textinput month" maxlength="2"
                                                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                autocomplete="off" type="number" placeholder="MM" min="01" max="12" />
+                                                autocomplete="off" type="number" placeholder="MM" min="01" max="12" 
+                                                onblur="cardDateValidate()"
+                                                onkeydown="setDateSuccessFor()" />
                                             <span>/</span>
                                             <input name="YYYY" id="year" class="textinput year" maxlength="4"
                                                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                                autocomplete="off" type="number" placeholder="YEAR" min="2023" max="2050" />
-                                                
-                                        </label>
+                                                autocomplete="off" type="number" placeholder="YEAR" min="2023" max="2050"
+                                                onblur="cardDateValidate()"
+                                                onkeydown="setDateSuccessFor()" />                                                
+                                                <small class="show-mobile" id="cardDateErrorMob"></small>                                    
+                                            </label>
+                                   
                                     </div>
                                     <div>
                                         <div class="form-label">
@@ -168,18 +177,21 @@
                                         </div>
                                         <label class="input-container">
                                             <input id="iCVC" name="$CVC" maxlength="3" class="textinput cvc" type="password"
-                                                autocomplete="off" placeholder="123" />                                            
+                                            autocomplete="off" placeholder="123"
+                                            onblur="cardCVCValidate()" 
+                                            onkeydown="setCVCSuccessFor()" />                             
+                                            <small class="show-mobile" id="cardCVCErrorMob"></small>
                                             <img src="images/info.svg" class="info-icon" />
                                             <p class="tooltip">3 digit code imprinted on the reverse side of the card</p>
                                         </label>
-                                    </div>
+                                    </div>                                    
                                 </div>
-                                <small id="cardNumberError">Error Message</small>
-                                <small id="cardMonthError">Error Message</small>
-                                <small id="cardYearError">Error Message</small>
-                                <small id="cardCVCError">Error Message</small>
-                                <span class="form-validation valid"></span>
-                                            <p id="iCVCdesc" class="remarks" hidden> </p>
+                                <div class="cc-number-errors">
+                                    <small class="hide-mobile" id="cardNumberError"></small>
+                                    <small class="hide-mobile" id="cardDateError"></small>                                    
+                                    <small class="hide-mobile" id="cardCVCError"></small>
+                                </div>
+                                
 
 
 
@@ -189,7 +201,7 @@
                                         <button id="buttonPayment" class="Button" type="submit">
                                             Pay 
                                             <strong>
-                                                <span id="payAmount"></span>
+                                                <span id="payAmount" class="payamount"></span>
                                             </strong>
                                         </button>
                                     </div>
@@ -207,7 +219,7 @@
                             <img src="images/cards.svg" height="100" style="margin-bottom: -20px" /> 
                             <div class="center">
                                 <img src="images/safe.svg" width="40" style="display: inline;"/> 
-                                Guaranteed <strong>safe & secure</strong>checkout
+                                <span>Guaranteed </span><strong><span style="margin: 0 4px;"> safe & secure </span></strong><span> checkout</span>
                             </div>                                            
                         </div>
                     </footer>
@@ -226,116 +238,31 @@
     </div>
    
    <script>
-        const yearSelect = document.querySelector('.year_select_');
+        // const yearSelect = document.querySelector('.year_select_');
         const form = document.querySelector('#formPayment')
         const name = document.querySelector('#iTEXT')
         const cardNumber = document.querySelector('#iPAN')
-        const cvv = document.querySelector('#iCVC')
+        const cardMonth = document.querySelector('#month')
+        const cardYear = document.querySelector('#year')
+        const cvc = document.querySelector('#iCVC')
         const button = document.querySelector('#buttonPayment')  
         const ccImage = document.querySelector('#ccImg') 
-
-
         const userInput = [];
-       
-
+        let cvcType = "";
+ 
 
         form.addEventListener("submit", (e) => {
             e.preventDefault();            
             checkInput();
         })
 
-        function nameValidate() {
-            const nameValue = name.value.trim();
+        function checkInput() {
+            nameValidate();
+            cardNumberValidate();
+            cardDateValidate();
+            cardCVCValidate();
             
-            if(nameValue === '' || nameValue == null) {
-                setErrorFor(name, "Enter your name as it appears on your card");
-                userInput.push(false);
-            } else {
-                setSuccessFor(name);
-                userInput.push(nameValue);
-            }
-        }
-
-            function setErrorFor(input, message) {
-            const formControl = input.parentElement;
-            const small = formControl.querySelector("small");
-            
-            small.innerText = message;
-            
-            formControl.className = "input-container error"
-       }
-        function cardNumberValidate() {
-            const amexVal = /^(?:3[47][0-9]{13})$/;
-            const visaVal = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
-            const masterVal = /^(?:5[1-5][0-9]{14})$/;
-            const cardNumberValue = cardNumber.value
-            
-            if(cardNumberValue === '' || cardNumberValue == null) {
-                setErrorFor(cardNumber, "Enter the 15/16 digit number on your card");
-                userInput.push(false);
-            } else if (cardNumberValue.match(amexVal) ||
-            cardNumberValue.match(visaVal) || cardNumberValue.match(masterVal) ) {
-                setSuccessFor(cardNumber);
-                userInput.push(cardNumberValue);
-            } else  {
-                setErrorFor(cardNumber, "Not a valid card number on your card");
-                userInput.push(false);
-            }
-        }
-
-            function setErrorFor(input, message) {
-            const formControl = input.parentElement;
-            const small = formControl.querySelector("small");
-            
-            small.innerText = message;
-            
-            formControl.className = "input-container error"
-       }
-        
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       function checkInput() {
-            const nameValue = name.value.trim();
-            //   const passwordValue = password.value;
-            const userInput = [];
-            
-            if(nameValue === '' || nameValue == null) {
-                setErrorFor(name, "Enter your name as it appears on your card");
-                userInput.push(false);
-            } else if(!isname(nameValue)){
-                setErrorFor(name, "Name is not valid");
-                userInput.push(false);
-            } else {
-                setSuccessFor(name);
-                userInput.push(nameValue);
-            }
-            
-            //   if(passwordValue === '' || passwordValue == null) {
-            //     setErrorFor(password, "Password cannot be blank");
-            //     userInput.push(false);
-            //   } else {
-            //     setSuccessFor(password);
-            //     userInput.push(passwordValue);
-            //   }
+           
             
             const isValidUserInput = userInput.every(el => {
                 return el !== "" && el != null && el !== false;
@@ -346,7 +273,7 @@
                 return;
             }
             
-            //   checkLogin(userInput);
+           
             }
 
             function setErrorFor(input, message) {
@@ -358,43 +285,118 @@
             formControl.className = "input-container error"
        }
 
+        function nameValidate() {
+            const nameValue = name.value.trim();
+            
+            if(nameValue === '' || nameValue == null) {
+                setNameErrorFor(name, "Enter your name as it appears on your card");
+                userInput.push(false);
+            } else {
+                setNameSuccessFor();
+                userInput.push(nameValue);
+            }
+        }
+        function setNameErrorFor(name, message) {
+            const formControl = name.parentElement;
+            const small = formControl.querySelector("small");
+            small.innerText = message;
+            small.className = "";
+            formControl.className = "input-container error";
+        }
+        function setNameSuccessFor() {
+            const formControl = name.parentElement;
+            const small = formControl.querySelector("small");
+            small.innerText = "";
+            small.className = "error-hide";
+            formControl.className = "input-container";
+        }
+     
+        function cardNumberValidate() {
+            
+            const cardNumberValue = cardNumber.value
+            const cardNumberError = document.getElementById("cardNumberError");
+            const cardNumberErrorMob = document.getElementById("cardNumberErrorMob");
+            
+            if(cardNumberValue === '' || cardNumberValue == null) {
+                setCardNumberErrorFor("Enter the 15/16 digit number on your card");
+                userInput.push(false);
+            } else if ((cvcType === "amex" &&  cardNumberValue.length == 17 ) ||
+                       (cvcType === "visa" &&  cardNumberValue.length == 19 ) ||
+                       (cvcType === "master" &&  cardNumberValue.length == 19 ) ) {
+                setCardNumberSuccessFor();
+                userInput.push(cardNumberValue);
+            } else  {
+                setCardNumberErrorFor("Not a valid card number. Enter the 15/16 digit number on your card");
+                userInput.push(false);
+            }
+        }
+        function setCardNumberErrorFor(message) {            
+            const formControl = cardNumber.parentElement;
+            cardNumberError.innerText = message;            
+            cardNumberErrorMob.innerText = message;            
+            formControl.className = "input-container error"
+       }
+        function setCardNumberSuccessFor() {            
+            const formControl = cardNumber.parentElement;
+            cardNumberError.innerText = "";            
+            cardNumberErrorMob.innerText = "";            
+            formControl.className = "input-container"
+       }
+              
+        function cardDateValidate() {            
+            const cardMonthValue = cardMonth.value
+            const cardYearValue = cardYear.value
+            const cardDateError = document.getElementById("cardDateError");
+            const cardDateErrorMob = document.getElementById("cardDateErrorMob");
+            
+            if(cardMonthValue === '' || cardMonthValue == null || cardYearValue === '' || cardYearValue == null ) {
+                setDateErrorFor("Enter the month and year your card expires");
+                userInput.push(false);
+            } else if ( (0 < cardMonthValue <= 12) &&  cardYearValue >= 2023 && cardYearValue < 2050  )  {
+                setDateSuccessFor();
+                console.log(cardMonthValue, cardYearValue)
+                userInput.push(cardMonthValue, cardYearValue);
+            } else  {
+                setDateErrorFor("Not a valid date. Enter the month and year your card expires.");
+                userInput.push(false);
+            }
+        }
+        function setDateErrorFor(message) {            
+            const formControl = month.parentElement;
+            cardDateError.innerText = message;            
+            cardDateErrorMob.innerText = message;            
+            formControl.className = "input-container error"
+       }
+        function setDateSuccessFor() {            
+            const formControl = month.parentElement;
+            cardDateError.innerText = "";                        
+            cardDateErrorMob.innerText = "";                        
+            formControl.className = "input-container"
+       }
+       
+        function cardCVCValidate() {   
+            if((cvc.value.length == 3 && (cvcType === "visa" || cvcType === "master")) || (cvc.value.length == 4 && cvcType === "amex")) {
+                setCVCSuccessFor();
+                userInput.push(cvc.value);
+            } else  {
+                setCVCErrorFor("Fill the 3 or 4-digit code code located on the back of your card");
+                userInput.push(false);
+            }
+        }
+        function setCVCErrorFor(message) {            
+            const formControl = cvc.parentElement;
+            cardCVCError.innerText = message;            
+            cardCVCErrorMob.innerText = message;            
+            formControl.className = "input-container error"
+        }
+        function setCVCSuccessFor() {            
+            const formControl = cvc.parentElement;
+            cardCVCError.innerText = "";            
+            cardCVCErrorMob.innerText = "";            
+            formControl.className = "input-container";
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          
         $(":input").inputmask();
         $('#iPAN').on('input propertychange paste', function() {
             var value = $('#iPAN').val();
@@ -410,25 +412,32 @@
             if ((/^3[47]\d{0,13}$/).test(value)) {
                 formattedValue = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{6})/, '$1 $2 ');
                 maxLength = 17;
-                Object.assign(cvv, { placeholder: '1234', maxLength: '4', })
-                ccImage.setAttribute("src", "images/amex.svg")
+                Object.assign(cvc, { placeholder: '1234', maxLength: '4', })
+                ccImage.setAttribute("src", "images/amex.svg");
+                cvcType = "amex";
+                isMatch = true;
                 
-            } else if  ((/^5[1-5]\d{0,14}$/).test(value)) {       
+            } else if  ((/^5[1-5]\d{0,14}$/).test(value) || (/^2[2-7]\d{0,14}$/).test(value) ) {       
                 formattedValue = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ');
                 maxLength = 19;
                 ccImage.setAttribute("src", "images/master.svg")
-                Object.assign(cvv, { placeholder: '123', maxLength: '3', })
+                cvcType = "master";
+                Object.assign(cvc, { placeholder: '123', maxLength: '3', })
+                
             }
             else if ((/^4[0-9]\d{0,14}$/).test(value)) {
                 formattedValue = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ');
                 maxLength = 19;
+                cvcType = "visa";
                 ccImage.setAttribute("src", "images/visa.svg")
-                Object.assign(cvv, { placeholder: '123', maxLength: '3', })
+                Object.assign(cvc, { placeholder: '123', maxLength: '3', })
             }  else if ((/^\d{0,16}$/).test(value)) { 
                 formattedValue = value.replace(/(\d{4})/, '$1 ').replace(/(\d{4}) (\d{4})/, '$1 $2 ').replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ');
                 maxLength = 19;
+                cvcType = "";
                 ccImage.setAttribute("src", "")            
-                Object.assign(cvv, { placeholder: '123', maxLength: '3', })
+                Object.assign(cvc, { placeholder: '123', maxLength: '3', })
+                
             } 
                 
             $('#iPAN').attr('maxlength', maxLength);
@@ -497,28 +506,28 @@
 
         // form.addEventListener('click', e => {
 
-        //     checkRequired([name, cardNumber, cvv]);
+        //     checkRequired([name, cardNumber, cvc]);
         //     // checkLength(name, 4, 30);
         //     checkLength(cardNumber, 16, 16);
-        //     checkLength(cvv, 3, 3);
+        //     checkLength(cvc, 3, 3);
         //     if (!isFormValid()) e.preventDefault();
 
         // });
 
 
-        for (let i = 0; i < 7; i++) {
-            const currentYear = new Date().getFullYear()
-            const option = document.createElement('option');
-            option.value = currentYear + i;
-            option.innerHTML = currentYear + i;
-            if (option.value == currentYear) {
-                option.setAttribute('selected', '')
-            }
+        // for (let i = 0; i < 7; i++) {
+        //     const currentYear = new Date().getFullYear()
+        //     const option = document.createElement('option');
+        //     option.value = currentYear + i;
+        //     option.innerHTML = currentYear + i;
+        //     if (option.value == currentYear) {
+        //         option.setAttribute('selected', '')
+        //     }
 
-            yearSelect.appendChild(option)
-            if (yearSelect.children.length === 7) break;
+        //     yearSelect.appendChild(option)
+        //     if (yearSelect.children.length === 7) break;
 
-        }
+        // }
     </script>
 </body>
 

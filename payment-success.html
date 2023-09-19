@@ -1,0 +1,168 @@
+﻿<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=0.8" > -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tree Mountain Leaf - Online Payments</title>
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="../../js/jquery-1.8.1.min.js"></script> -->    
+    
+    <script type="text/javascript" src="../../js/jquery-ui-1.9.2.custom.min.js"></script>
+    
+    
+    <script type="text/javascript" src="js s/jquery.timers-1.2.js"></script>
+    <!-- <script type="text/javascript" src="../../js/jquery.timers-1.2.js"></script> -->
+
+
+    <script type="text/javascript" src="../../js/jquery.url.js"></script>
+    <script type="text/javascript" src="../../js/jquery.payment_new.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/jquery.inputmask.bundle.js"></script>
+
+
+
+
+    <script type="text/javascript" src="js s/jquery.maskedinput.js"></script>
+    <!-- <script type="text/javascript" src="../../js/maskedinput.js"></script> -->
+
+
+    <script type="text/javascript" src="../../js/jquery.main.js"></script>
+    <script type="text/javascript" src="../../js/select.js"></script>
+    <script type="text/javascript" src="../../js/localization.js"></script>
+   
+</head>
+
+<body>
+    <div id="formContainer" class="center pay-container">
+        <div class="parent-form-container">
+            <img src='./images/logo_gray.png' class="Logo" />
+            <form name="PaymentForm" class="form-container" action="" method="POST" id="formPayment">
+                <input type="hidden" id="expiry">
+                <input type="hidden" id="mdOrder">
+                <input type="hidden" id="location" value="/payment/">
+                <input type="hidden" id="language" value="EN">
+                <div class="m-form_wrapper">
+                    <div class="m-header">
+                        <div class="m-timer_bar">
+                            <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M24.5 12C24.5 15.1826 23.2357 18.2348 20.9853 20.4853C18.7348 22.7357 15.6826 24 12.5 24C9.3174 24 6.26515 22.7357 4.01472 20.4853C1.76428 18.2348 0.5 15.1826 0.5 12C0.5 11.7348 0.605357 11.4804 0.792893 11.2929C0.98043 11.1054 1.23478 11 1.5 11C1.76522 11 2.01957 11.1054 2.20711 11.2929C2.39464 11.4804 2.5 11.7348 2.5 12C2.5 13.9778 3.08649 15.9112 4.1853 17.5557C5.28412 19.2002 6.8459 20.4819 8.67317 21.2388C10.5004 21.9957 12.5111 22.1937 14.4509 21.8079C16.3907 21.422 18.1725 20.4696 19.5711 19.0711C20.9696 17.6725 21.922 15.8907 22.3079 13.9509C22.6937 12.0111 22.4957 10.0004 21.7388 8.17317C20.9819 6.3459 19.7002 4.78412 18.0557 3.6853C16.4112 2.58649 14.4778 2 12.5 2C12.2348 2 11.9804 1.89464 11.7929 1.70711C11.6054 1.51957 11.5 1.26522 11.5 1C11.5 0.734784 11.6054 0.48043 11.7929 0.292893C11.9804 0.105357 12.2348 0 12.5 0C15.6815 0.00344108 18.7318 1.26883 20.9815 3.51852C23.2312 5.76821 24.4966 8.81846 24.5 12ZM10.777 11H8.5C8.23478 11 7.98043 11.1054 7.79289 11.2929C7.60536 11.4804 7.5 11.7348 7.5 12C7.5 12.2652 7.60536 12.5196 7.79289 12.7071C7.98043 12.8946 8.23478 13 8.5 13H10.777C10.9297 13.2652 11.1414 13.4917 11.3958 13.662C11.6501 13.8323 11.9402 13.9417 12.2436 13.9818C12.547 14.0219 12.8556 13.9917 13.1454 13.8934C13.4353 13.7951 13.6986 13.6314 13.915 13.415C14.1314 13.1986 14.2951 12.9353 14.3934 12.6454C14.4917 12.3556 14.5219 12.047 14.4818 11.7436C14.4417 11.4402 14.3323 11.1501 14.162 10.8958C13.9917 10.6414 13.7652 10.4297 13.5 10.277V7C13.5 6.73478 13.3946 6.48043 13.2071 6.29289C13.0196 6.10536 12.7652 6 12.5 6C12.2348 6 11.9804 6.10536 11.7929 6.29289C11.6054 6.48043 11.5 6.73478 11.5 7V10.277C11.2004 10.4513 10.9513 10.7004 10.777 11ZM2.327 8.784C2.52478 8.784 2.71812 8.72535 2.88257 8.61547C3.04702 8.50559 3.17519 8.34941 3.25088 8.16668C3.32657 7.98396 3.34637 7.78289 3.30779 7.58891C3.2692 7.39493 3.17396 7.21675 3.03411 7.07689C2.89425 6.93704 2.71607 6.8418 2.52209 6.80321C2.32811 6.76463 2.12704 6.78443 1.94432 6.86012C1.76159 6.93581 1.60541 7.06398 1.49553 7.22843C1.38565 7.39288 1.327 7.58622 1.327 7.784C1.327 8.04922 1.43236 8.30357 1.61989 8.49111C1.80743 8.67864 2.06178 8.784 2.327 8.784ZM4.721 5.207C4.91878 5.207 5.11212 5.14835 5.27657 5.03847C5.44102 4.92859 5.56919 4.77241 5.64488 4.58968C5.72057 4.40696 5.74037 4.20589 5.70179 4.01191C5.6632 3.81793 5.56796 3.63975 5.42811 3.49989C5.28825 3.36004 5.11007 3.2648 4.91609 3.22621C4.72211 3.18763 4.52104 3.20743 4.33832 3.28312C4.15559 3.35881 3.99941 3.48698 3.88953 3.65143C3.77965 3.81588 3.721 4.00922 3.721 4.207C3.721 4.47222 3.82636 4.72657 4.01389 4.91411C4.20143 5.10164 4.45578 5.207 4.721 5.207ZM8.279 2.841C8.47678 2.841 8.67012 2.78235 8.83457 2.67247C8.99902 2.56259 9.12719 2.40641 9.20288 2.22368C9.27857 2.04096 9.29837 1.83989 9.25979 1.64591C9.2212 1.45193 9.12596 1.27375 8.98611 1.13389C8.84625 0.994041 8.66807 0.8988 8.47409 0.860215C8.28011 0.821629 8.07904 0.841433 7.89632 0.91712C7.71359 0.992808 7.55741 1.12098 7.44753 1.28543C7.33765 1.44988 7.279 1.64322 7.279 1.841C7.279 2.10622 7.38436 2.36057 7.57189 2.54811C7.75943 2.73564 8.01378 2.841 8.279 2.841Z"
+                                    fill="white" />
+                            </svg> -->
+                            <span class="label"></span><span class="value"><span id="numberCountdown"></span>
+                            </span><span> <span> </span></span></span>
+                        </div>
+                    </div>
+                    <main>
+                        <div id="fieldsTable" class="content">
+
+                            <div class="m-info_bar">
+                                <div class="m-info-bar-left">
+                                    <img src="images/TML-Logo.svg" class="tml-logo" width="80%" />
+                                    <span id="description" class="Description"></span>
+                                    <div>
+                                        <span class="label">Оrder number </span>
+                                        <span id="orderNumber" class="value"></span>
+                                    </div>
+                                </div>
+                                <div class="m-info-bar-right">
+                                    <span class="label">Transaction Amount</span>
+                                    <span class="m-info-bar-right-amount"><span id="amount"></span></span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <img class="payment-success-img" src="images/success.svg" width="200" />
+                                
+                                <div class="payment-success-text">
+                                    Transaction Successful
+                                </div>
+                                <div class="payment-redirect">Automatic Redirect to <br /> treemountainleaf.com</div>
+                            </div>
+
+
+                        </div>
+                    </main>
+                    <footer>
+                        <div class="payment-footer">
+
+                            <img src="images/cards.svg" height="100" style="margin-bottom: -20px" /> 
+                            <div class="center">
+                                <img src="images/safe.svg" width="40" style="display: inline;"/> 
+                                <span>Guaranteed </span><strong><span style="margin: 0 4px;"> safe & secure </span></strong><span> checkout</span>
+                            </div>                                            
+                        </div>
+                    </footer>
+                </div>
+            </form>
+        </div>
+        <form id="acs" method="post" action="">
+            <input type="hidden" id="MD" name="MD" />
+            <input type="hidden" id="PaReq" name="PaReq" />
+            <input type="hidden" id="TermUrl" name="TermUrl" />
+        </form>
+        <form id="threeDS2" method="post" action="">
+            <input type="hidden" id="CReq" name="creq" />
+        </form>
+        <div id="threeDS2MethodDiv" style="visibility: hidden;"></div>
+    </div>
+   
+   <script>
+        
+        
+
+        $(".box-circle").each(function() {
+        let i = 0,
+            that = $(this),
+            circleBorder = that.find(".circle-border"),
+            borderColor = circleBorder.data("color1"),
+            animationColor = circleBorder.data("color2"),
+            percentageText = that.find(".percentage"),
+            percentage = percentageText.data("percentage"),
+            degrees = percentage * 3.6;
+
+        circleBorder.css({
+            "background-color":  animationColor
+        });
+
+        setTimeout(function(){
+            loopIt();
+        }, 0);
+
+        function loopIt(){
+            i = i + 1
+
+            if (i < 0) {
+                i = 0;
+            }
+
+            if (i > degrees) {
+                i = degrees;
+            }
+
+            percentage = i / 3.6;
+            percentageText.text(percentage.toFixed(0)+" %");
+
+            if (i <= 180){
+                circleBorder.css('background-image','linear-gradient(' + (90 + i) + 'deg, transparent 50%,' + borderColor + ' 50%),linear-gradient(90deg, ' + borderColor + ' 50%, transparent 50%)');
+            }
+            else{
+                circleBorder.css('background-image','linear-gradient(' + (i - 90) + 'deg, transparent 50%,' + animationColor + ' 50%),linear-gradient(90deg, ' + borderColor + ' 50%, transparent 50%)');
+            }
+
+            setTimeout(function(){
+                loopIt();
+            },8);
+        }
+    });
+    </script>
+</body>
+
+</html>

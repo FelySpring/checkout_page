@@ -49,7 +49,9 @@ input:focus::-ms-input-placeholder {
 input:focus::-moz-placeholder {
   opacity: 0.3;
 }
-
+.text-center {
+  text-align: center;
+}
 .center {
   display: -ms-flexbox;
   -ms-flex-pack: center;
@@ -74,6 +76,8 @@ input:focus::-moz-placeholder {
   min-width: 764px;
   /*max-height: 650px;*/
 }
+
+
 
 main {
   /*-ms-flex:1;flex: 1;*/
@@ -890,7 +894,7 @@ div.form_box.small {
 }
 
 .Logo {
-  max-width: 290px;
+  max-width: 180px;
   width: 100%;
   margin-bottom: 34px;
   margin-top: 32px;
@@ -931,13 +935,14 @@ div.form_box.small {
   justify-content: space-between;
   margin-top: 6px;
   margin-bottom: 34px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .m-info-bar-left,
 .m-info-bar-right {
   display: flex;
   flex-direction: column;
+  max-width: 340px;
 }
 
 .m-info-bar-left span:nth-child(1),
@@ -947,7 +952,9 @@ div.form_box.small {
 
 .m-info-bar-right {
   align-items: flex-end;
-  min-width: 180px;
+  min-width: 130px;
+  max-width: 340px;
+  padding-top: 16px;
 }
 
 .m-info-bar-right-amount {
@@ -960,14 +967,14 @@ div.form_box.small {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 52px;
-  margin-bottom: 24px;
+  height: 44px;
+  margin-bottom: 32px;
 }
 
 .input-container input {
   width: 100%;
   height: 52px;
-  padding: 16px;
+  padding: 12px;
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.56);
   border: 1px solid #a6a6a6;
@@ -1067,6 +1074,10 @@ input::placeholder {
   display: flex;
   justify-content: space-between;
 }
+.cc-info-last-two {
+  display: flex;
+  justify-content: space-between;
+}
 .cc-info-number {
   flex-grow: 1;
   position: relative;
@@ -1078,6 +1089,13 @@ input::placeholder {
     right: 2px;
     top: 32px;
 }
+.cc-number-errors {
+  margin: -22px 0 24px 4px;
+  color: #ff4040;
+  display: flex;
+  flex-direction: column;
+}
+
 .Button_cont {
   width: 100%;
 }
@@ -1092,18 +1110,18 @@ input::placeholder {
   border-radius: 8px;
   font-size: 18px;
   font-weight: 400;
-
+  border: 3px solid #99daa2;
   background-color: #23bd64;
   color: #fff;
   cursor: pointer;
 
 }
 .Button:disabled {
-  background-color: #99daa2
+  background-color: #8acd93;
 }
 
 .Button:hover {
-  background-color: #8acd93;
+  background-color: #1cad59
 }
 
 .Button:active {
@@ -1151,9 +1169,45 @@ input::placeholder {
   border-color: #ff4040;
 }
 
-
+.show-mobile {
+  display: none;
+}
+.hide-mobile {
+  display: block;
+}
 @media screen and (max-width: 618px) {
+  .m-info_bar {
+    align-items: center ;
+  }
+    .m-info-bar-left, .m-info-bar-right {
+      align-items: center !important;
+  }
+  .m-info-bar-right {
+    width: 100%;
+  }
+  .show-mobile {
+    display: block;
+  }
+  .hide-mobile {
+    display: none;
+  }
+  .input-container {
+    margin-bottom: 34px;
+  }
+  .cc-info {
+    flex-direction: column;
+  }
+  .cc-info-number {
+    margin-right: 0;
+}
+.textinput.year {
+  width: calc(100% - 38px);
+  margin-right: 0;
+}
 
+.textinput.cvc {
+  width: 100%;
+}
   .Logo {
       width: 218px;
   }
@@ -1187,4 +1241,87 @@ input::placeholder {
   .footer_flex_row {
       flex-wrap: wrap;
   }
+}
+
+@media screen and (max-width: 560px) {
+
+}
+.loading-box-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+  }
+  
+  .box-wrapper {
+    flex: 0 0 150px;
+    height: 150px;
+    position: relative;
+  }
+  
+  .box-circle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    padding-top: 80%;
+  }
+  
+  .circle-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  
+  .circle-percentage {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    text-align: center;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+    border-radius: 50%;
+    background-color: #fff;
+  }
+  
+  .percentage {
+    position: absolute;
+    font-size: 22px;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    font-family: arial;
+    color: #1d43ff;
+    font-weight: bold;
+  }
+.payment-wait {
+  text-align: center;
+  padding: 25px;
+  font-size: 16px;
+}
+.payamount {
+  font-weight: bold;
+  margin-left: 4px;
+}
+.payment-success-text {
+  color: #1b914d;
+  font-size: 20px;
+  margin: 20px 0 35px;
+}
+.payment-fail-text {
+  color: #ff4040;
+  font-size: 20px;
+  margin: 20px 0 35px;
+}
+
+.payment-redirect {
+  color: #807985;
+  margin-top: 20px;
+  font-size: 18px;
 }
