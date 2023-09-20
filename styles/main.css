@@ -873,6 +873,10 @@ div.form_box.small {
   width: 100%;
   background-position: center;
   /* background-image: url(./images/bgi.png); */
+
+  zoom: 1.12; 
+  /* comment for the coders that will see this, the client wanted zooming for entire page,
+   cause it seemed a bit far away, after giving all the sizes for everything :D   */
 }
 
 .parent-form-container {
@@ -1176,6 +1180,9 @@ input::placeholder {
   display: block;
 }
 @media screen and (max-width: 618px) {
+  .pay-container {
+    zoom: 1;
+  }
   .m-info_bar {
     align-items: center ;
   }
@@ -1323,5 +1330,5 @@ input::placeholder {
 .payment-redirect {
   color: #807985;
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 16px;
 }
